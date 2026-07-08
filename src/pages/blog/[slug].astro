@@ -1,0 +1,302 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const longDate = post.data.pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const jsonLd = [
+  {
+    '@type': 'BlogPosting',
+    headline: post.data.title,
+    description: post.data.description,
+    datePublished: post.data.pubDate.toISOString(),
+    url: `https://routinly.org/blog/${post.id}`,
+    image: new URL(post.data.cover, Astro.site).href,
+    author: {
+      '@type': 'Organization',
+      name: 'The Routinly Team',
+      url: 'https://routinly.org/',
+    },
+    publisher: { '@id': 'https://routinly.org/#organization' },
+    mainEntityOfPage: `https://routinly.org/blog/${post.id}`,
+  },
+];
+---
+
+<BaseLayout
+  title={`${post.data.title} — Routinly Blog`}
+  description={post.data.description}
+  ogType="article"
+  jsonLd={jsonLd}
+>
+  <article>
+    <header class="container post-header">
+      <a href="/blog" class="back-link">← All posts</a>
+      <div class="post-meta">
+        <span class="tag-filled">{post.data.tag}</span>
+        <span class="meta-text">{longDate} · {post.data.readingTime}</span>
+      </div>
+      <h1>{post.data.title}</h1>
+      <div class="author">
+        <div class="author-avatar" aria-hidden="true">R</div>
+        <div class="author-info">
+          <span class="author-name">The Routinly Team</span>
+          <span class="author-site">routinly.org</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="container cover-wrap">
+      <div class="cover">
+        <img src={post.data.cover} alt="" width="920" height="460" loading="eager" />
+      </div>
+    </div>
+
+    <div class="container post-content">
+      <Content />
+    </div>
+
+    <div class="container post-cta-wrap">
+      <div class="post-cta">
+        <div class="cta-title">Try it on your next walkthrough</div>
+        <p>
+          The Free plan includes 3 videos a month with full AI processing. No credit card
+          required.
+        </p>
+        <a href="https://app.routinly.org">Get started free</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .post-header {
+    max-width: 760px;
+    padding-top: 72px;
+  }
+
+  .back-link {
+    font-size: 14.5px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13.5px;
+    font-weight: 600;
+    margin-top: 28px;
+  }
+
+  .tag-filled {
+    background: var(--accent);
+    color: var(--cream);
+    border-radius: 999px;
+    padding: 4px 12px;
+  }
+
+  .meta-text {
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .post-header h1 {
+    font-weight: 800;
+    font-size: clamp(32px, 5.5vw, 48px);
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    margin-top: 18px;
+    text-wrap: balance;
+  }
+
+  .author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .author-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .author-name {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .author-site {
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+
+  .cover-wrap {
+    max-width: 920px;
+    margin-top: 48px;
+  }
+
+  .cover {
+    width: 100%;
+    aspect-ratio: 16 / 8;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .post-content {
+    max-width: 760px;
+    padding-top: 56px;
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+  }
+
+  .post-content :global(p) {
+    margin: 0 0 24px 0;
+  }
+
+  .post-content :global(h2) {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 30px;
+    letter-spacing: -0.02em;
+    margin: 44px 0 16px 0;
+    color: var(--ink);
+  }
+
+  .post-content :global(ul) {
+    margin: 0 0 24px 0;
+    padding-left: 24px;
+  }
+
+  .post-content :global(li) {
+    margin-bottom: 8px;
+  }
+
+  .post-content :global(.callout) {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin: 36px 0;
+  }
+
+  .post-content :global(.callout-title) {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .post-content :global(.callout p) {
+    margin: 0;
+    font-size: 16.5px;
+    line-height: 1.7;
+  }
+
+  .post-cta-wrap {
+    max-width: 760px;
+    padding-top: 64px;
+    padding-bottom: 110px;
+  }
+
+  .post-cta {
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 20px;
+    padding: 44px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .cta-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .post-cta p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--cream-70);
+  }
+
+  .post-cta a {
+    background: var(--accent);
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 13px 26px;
+    border-radius: 999px;
+    transition: background 0.15s;
+  }
+
+  .post-cta a:hover {
+    background: var(--accent-bright);
+    color: var(--cream);
+  }
+
+  @media (max-width: 640px) {
+    .post-header {
+      padding-top: 48px;
+    }
+
+    .cover-wrap {
+      margin-top: 32px;
+    }
+
+    .post-content {
+      padding-top: 40px;
+    }
+
+    .post-cta {
+      padding: 32px 26px;
+    }
+  }
+</style>

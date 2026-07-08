@@ -1,0 +1,103 @@
+---
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/instrument-sans';
+import '../styles/global.css';
+import SiteNav from '../components/SiteNav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Open Graph type, defaults to "website" */
+  ogType?: 'website' | 'article';
+  /** Absolute path to the social share image, defaults to the site-wide card */
+  ogImage?: string;
+  /** Extra JSON-LD objects to embed alongside the site-wide Organization/WebSite schema */
+  jsonLd?: Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  ogType = 'website',
+  ogImage = '/og.png',
+  jsonLd = [],
+} = Astro.props;
+
+// build.format 'file' leaves ".html" on Astro.url.pathname; the served URLs
+// (and the sitemap) are extensionless, so canonicals must be too.
+const canonicalPath =
+  Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/') || '/';
+const canonical = new URL(canonicalPath, Astro.site);
+const ogImageUrl = new URL(ogImage, Astro.site);
+
+const baseSchema: Record<string, unknown>[] = [
+  {
+    '@type': 'Organization',
+    '@id': 'https://routinly.org/#organization',
+    name: 'Routinly',
+    url: 'https://routinly.org/',
+    logo: new URL('/images/logo.png', Astro.site).href,
+    email: 'hello@routinly.org',
+    sameAs: [
+      'https://twitter.com/routinly',
+      'https://github.com/routinly',
+      'https://linkedin.com/company/routinly',
+    ],
+  },
+  {
+    '@type': 'WebSite',
+    '@id': 'https://routinly.org/#website',
+    name: 'Routinly',
+    url: 'https://routinly.org/',
+    publisher: { '@id': 'https://routinly.org/#organization' },
+  },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [...baseSchema, ...jsonLd],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#faf6ee" />
+
+    <meta property="og:site_name" content="Routinly" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@routinly" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+  <body>
+    <SiteNav />
+    <main>
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

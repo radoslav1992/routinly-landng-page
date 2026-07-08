@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://routinly.org/sitemap-index.xml

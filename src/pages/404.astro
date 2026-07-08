@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page not found — Routinly"
+  description="The page you're looking for doesn't exist. Head back to Routinly to keep turning screen recordings into documentation."
+>
+  <section class="container not-found">
+    <div class="eyebrow">404</div>
+    <h1>This page went undocumented</h1>
+    <p>The page you're looking for doesn't exist or has moved. Let's get you back on track.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="/">Back to home</a>
+      <a class="btn btn-outline" href="/blog">Read the blog</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    padding-top: 120px;
+    padding-bottom: 140px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .not-found h1 {
+    font-weight: 800;
+    font-size: clamp(38px, 6.5vw, 60px);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-top: 16px;
+    max-width: 720px;
+    text-wrap: balance;
+  }
+
+  .not-found p {
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 480px;
+    margin: 20px 0 0 0;
+  }
+
+  .actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 36px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+</style>

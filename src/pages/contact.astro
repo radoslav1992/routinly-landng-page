@@ -1,0 +1,283 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const channels = [
+  { title: 'Support', email: 'support@routinly.org' },
+  { title: 'Sales & teams', email: 'hello@routinly.org' },
+  { title: 'Privacy & legal', email: 'privacy@routinly.org' },
+];
+
+const jsonLd = [
+  {
+    '@type': 'ContactPage',
+    name: 'Contact Routinly',
+    url: 'https://routinly.org/contact',
+    about: { '@id': 'https://routinly.org/#organization' },
+  },
+];
+---
+
+<BaseLayout
+  title="Contact — Routinly"
+  description="Questions about plans, a bug to report, or an idea for Routinly? Reach the team at support@routinly.org — we usually reply within one business day."
+  jsonLd={jsonLd}
+>
+  <section class="container contact">
+    <div class="contact-grid">
+      <div class="contact-intro">
+        <div class="eyebrow">Contact</div>
+        <h1>Talk to a human</h1>
+        <p>
+          Questions about plans, a bug to report, or an idea for Routinly? We read everything and
+          usually reply within one business day.
+        </p>
+        <div class="channels">
+          {
+            channels.map((channel) => (
+              <div class="channel-card">
+                <div class="channel-title">{channel.title}</div>
+                <a href={`mailto:${channel.email}`}>{channel.email}</a>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h2>Send us a message</h2>
+        <div class="form-success" id="form-success" hidden>
+          <div class="success-title">Message sent 🦉</div>
+          <p>Thanks — we'll get back to you within one business day.</p>
+        </div>
+        <form id="contact-form">
+          <div class="field-row">
+            <div class="field">
+              <label for="cf-name">Name</label>
+              <input id="cf-name" name="name" type="text" placeholder="Your name" required />
+            </div>
+            <div class="field">
+              <label for="cf-email">Email</label>
+              <input id="cf-email" name="email" type="email" placeholder="you@company.com" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="cf-subject">Subject</label>
+            <input id="cf-subject" name="subject" type="text" placeholder="What's this about?" required />
+          </div>
+          <div class="field">
+            <label for="cf-message">Message</label>
+            <textarea id="cf-message" name="message" rows="6" placeholder="Tell us what you need…" required></textarea>
+          </div>
+          <button type="submit">Send message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // No backend yet: hand the message to the visitor's mail client, addressed
+  // to support, then show the confirmation card.
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const success = document.getElementById('form-success');
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    const subject = encodeURIComponent(String(data.get('subject') ?? ''));
+    const body = encodeURIComponent(
+      `${data.get('message') ?? ''}\n\n— ${data.get('name') ?? ''} (${data.get('email') ?? ''})`
+    );
+    window.location.href = `mailto:support@routinly.org?subject=${subject}&body=${body}`;
+    form.hidden = true;
+    if (success) success.hidden = false;
+  });
+</script>
+
+<style>
+  .contact {
+    padding-top: 80px;
+    padding-bottom: 110px;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 72px;
+    align-items: start;
+  }
+
+  .contact-intro {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .contact-intro h1 {
+    font-weight: 800;
+    font-size: clamp(38px, 6vw, 54px);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .contact-intro > p {
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--muted);
+    margin: 0;
+    max-width: 440px;
+  }
+
+  .channels {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 12px;
+  }
+
+  .channel-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .channel-title {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .channel-card a {
+    font-size: 15.5px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .form-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .form-card h2 {
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  .form-success[hidden] {
+    display: none;
+  }
+
+  .form-success {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .success-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .form-success p {
+    margin: 0;
+    font-size: 15.5px;
+    color: var(--muted);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  label {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  input,
+  textarea {
+    font-family: var(--font-body);
+    font-size: 15.5px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--ink);
+    outline: none;
+  }
+
+  input:focus,
+  textarea:focus {
+    border-color: var(--accent);
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  button {
+    font-family: var(--font-body);
+    background: var(--accent);
+    color: var(--cream);
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 0;
+    border-radius: 999px;
+    transition: background 0.15s;
+  }
+
+  button:hover {
+    background: var(--accent-hover);
+  }
+
+  @media (max-width: 900px) {
+    .contact {
+      padding-top: 56px;
+      padding-bottom: 80px;
+    }
+
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .form-card {
+      padding: 28px 24px;
+    }
+
+    .field-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
