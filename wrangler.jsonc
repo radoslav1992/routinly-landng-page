@@ -1,0 +1,15 @@
+// Cloudflare Workers config — static-assets-only Worker (Pages successor).
+// Deploy with `npm run deploy` (builds, then `wrangler deploy`).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "routinly-landing-page",
+  "compatibility_date": "2026-07-01",
+  "assets": {
+    "directory": "./dist",
+    // Serve pricing.html at /pricing (no trailing slash), matching the
+    // canonical URLs baked into the pages.
+    "html_handling": "auto-trailing-slash",
+    // Serve dist/404.html with a 404 status for unknown routes.
+    "not_found_handling": "404-page"
+  }
+}

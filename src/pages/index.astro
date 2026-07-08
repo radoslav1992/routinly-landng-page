@@ -1,0 +1,607 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AppPreview from '../components/AppPreview.astro';
+import SopPreview from '../components/SopPreview.astro';
+import CtaSection from '../components/CtaSection.astro';
+
+const steps = [
+  {
+    number: '01',
+    title: 'Record',
+    copy: 'Capture your screen right in Routinly, upload a video, or paste a YouTube link. MP4, WebM, and audio files up to 500MB.',
+  },
+  {
+    number: '02',
+    title: 'AI writes the steps',
+    copy: 'Routinly detects every action, writes clear numbered instructions, and captures the right screenshot for each step — automatically.',
+  },
+  {
+    number: '03',
+    title: 'Share anywhere',
+    copy: 'Publish a link or export to PDF, Markdown, or HTML. Your team always sees the latest version.',
+  },
+];
+
+const features = [
+  {
+    title: 'AI step detection',
+    copy: 'Every click, field, and screen change becomes a numbered step. You never face a blank page.',
+  },
+  {
+    title: 'Auto-captured screenshots',
+    copy: 'The right frame for every step, pulled from your video. No screenshot juggling, ever.',
+  },
+  {
+    title: 'YouTube import',
+    copy: 'Paste a URL and turn any tutorial video into a written guide — no download needed.',
+  },
+  {
+    title: 'Your voice, your tone',
+    copy: 'Formal, friendly, or brief — tell Routinly how your team writes and every SOP matches.',
+  },
+  {
+    title: 'Export everywhere',
+    copy: 'PDF, Markdown, HTML, or a public share link. Watermark-free on paid plans.',
+  },
+  {
+    title: 'Built for teams',
+    copy: 'Shared workspace, pooled videos, unlimited seats, and custom branding on the Team plan.',
+  },
+];
+
+const plans = [
+  {
+    name: 'Free',
+    price: '$0',
+    copy: "3 videos a month with full AI processing. Enough to know you'll never write an SOP by hand again.",
+    dark: false,
+  },
+  {
+    name: 'Solo',
+    price: '$19',
+    copy: '20 videos, watermark-free exports, custom tone, and every export format. For professionals who document often.',
+    dark: true,
+  },
+  {
+    name: 'Team',
+    price: '$59',
+    copy: '100 pooled videos, unlimited seats, shared workspace, and custom branding. One price for the whole team.',
+    dark: false,
+  },
+];
+
+const jsonLd = [
+  {
+    '@type': 'SoftwareApplication',
+    name: 'Routinly',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    url: 'https://routinly.org/',
+    description:
+      'Routinly watches your screen recording and writes the step-by-step guide for you — screenshots included. Turn videos into SOPs in minutes with AI.',
+    offers: [
+      { '@type': 'Offer', name: 'Free', price: '0', priceCurrency: 'USD' },
+      { '@type': 'Offer', name: 'Solo', price: '19', priceCurrency: 'USD' },
+      { '@type': 'Offer', name: 'Team', price: '59', priceCurrency: 'USD' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Routinly — Turn screen recordings into SOPs with AI"
+  description="Routinly watches your screen recording and writes the step-by-step guide for you — screenshots included. What used to take an afternoon now takes five minutes."
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="container hero">
+    <div class="hero-badge">
+      <span class="dot" aria-hidden="true"></span>
+      AI-powered SOP generator
+    </div>
+    <h1>Hit record.<br />Get documentation.</h1>
+    <p class="hero-copy">
+      Routinly watches your screen recording and writes the step-by-step guide for you —
+      screenshots included. What used to take an afternoon now takes five minutes.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://app.routinly.org">Get started free</a>
+      <a class="btn btn-outline" href="/pricing">See pricing</a>
+    </div>
+    <div class="fine-print hero-note">Free plan · No credit card required</div>
+    <div class="hero-frame">
+      <div class="hero-slot">
+        <AppPreview />
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="container how-it-works">
+    <div class="eyebrow">How it works</div>
+    <h2 class="section-heading">From video to finished SOP in three steps</h2>
+    <div class="steps-grid">
+      {
+        steps.map((step) => (
+          <div class="step">
+            <div class="step-number">{step.number}</div>
+            <h3 class="step-title">{step.title}</h3>
+            <p>{step.copy}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="container features" id="features">
+    <div class="eyebrow">Features</div>
+    <h2 class="section-heading">Everything documentation needs. Nothing it doesn't.</h2>
+    <div class="features-grid">
+      {
+        features.map((feature) => (
+          <div class="feature-card">
+            <h3>{feature.title}</h3>
+            <p>{feature.copy}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Dark band -->
+  <section class="dark-band">
+    <div class="container dark-band-inner">
+      <div class="dark-band-copy">
+        <h2>Knowledge shouldn't leave when people do.</h2>
+        <p>
+          Most teams skip documentation because writing it is a chore. Routinly makes it a
+          byproduct of work you're already doing — record once, and the process is captured for
+          everyone who comes after.
+        </p>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-value">&lt; 5 min</div>
+            <div class="stat-label">from video to finished SOP</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">3 formats</div>
+            <div class="stat-label">PDF · Markdown · HTML</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">∞ seats</div>
+            <div class="stat-label">on the Team plan</div>
+          </div>
+        </div>
+      </div>
+      <div class="dark-band-frame">
+        <div class="dark-band-slot">
+          <SopPreview />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing teaser -->
+  <section class="container pricing-teaser">
+    <div class="pricing-header">
+      <div class="eyebrow">Pricing</div>
+      <h2 class="section-heading">Start free. Upgrade when it earns it.</h2>
+    </div>
+    <div class="plans-grid">
+      {
+        plans.map((plan) => (
+          <div class:list={['plan-card', { dark: plan.dark }]}>
+            {plan.dark && <div class="plan-badge">Most popular</div>}
+            <h3>{plan.name}</h3>
+            <div class="plan-price">
+              <span class="amount">{plan.price}</span>
+              <span class="period">/month</span>
+            </div>
+            <p>{plan.copy}</p>
+          </div>
+        ))
+      }
+    </div>
+    <div class="compare-link">
+      <a href="/pricing">Compare all plans →</a>
+    </div>
+  </section>
+
+  <CtaSection
+    heading="Your next SOP is already recorded."
+    copy="Join the teams turning screen recordings into documentation with Routinly."
+  />
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .hero {
+    padding-top: 88px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border);
+    background: #ffffff;
+    border-radius: 999px;
+    padding: 7px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .hero-badge .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+  }
+
+  .hero h1 {
+    font-weight: 800;
+    font-size: clamp(44px, 8vw, 76px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin-top: 28px;
+    max-width: 900px;
+    text-wrap: balance;
+  }
+
+  .hero-copy {
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 620px;
+    margin: 24px 0 0 0;
+    text-wrap: pretty;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 36px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero-note {
+    margin-top: 16px;
+  }
+
+  .hero-frame {
+    width: 100%;
+    max-width: 1020px;
+    margin-top: 64px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 14px;
+    box-shadow: 0 24px 60px -24px rgba(27, 23, 18, 0.25);
+  }
+
+  .hero-slot {
+    width: 100%;
+    aspect-ratio: 16 / 9.5;
+  }
+
+  /* Section headers */
+  .section-heading {
+    font-weight: 800;
+    font-size: clamp(30px, 5vw, 46px);
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    margin-top: 14px;
+    max-width: 640px;
+  }
+
+  /* How it works */
+  .how-it-works {
+    padding-top: 120px;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 56px;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    border-top: 2px solid var(--ink);
+    padding-top: 24px;
+  }
+
+  .step-number {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .step-title {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .step p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+
+  /* Features */
+  .features {
+    padding-top: 120px;
+  }
+
+  .features .section-heading {
+    max-width: 560px;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 56px;
+  }
+
+  .feature-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .feature-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .feature-card p {
+    margin: 0;
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* Dark band */
+  .dark-band {
+    margin-top: 120px;
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  .dark-band-inner {
+    padding-top: 96px;
+    padding-bottom: 96px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+
+  .dark-band-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .dark-band h2 {
+    font-weight: 800;
+    font-size: clamp(32px, 5vw, 46px);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  .dark-band-copy > p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--cream-70);
+    max-width: 520px;
+  }
+
+  .stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--peach);
+  }
+
+  .stat-label {
+    font-size: 14px;
+    color: var(--cream-60);
+  }
+
+  .dark-band-frame {
+    background: rgba(250, 246, 238, 0.06);
+    border: 1px solid rgba(250, 246, 238, 0.14);
+    border-radius: 18px;
+    padding: 12px;
+  }
+
+  .dark-band-slot {
+    width: 100%;
+    aspect-ratio: 4 / 4.4;
+  }
+
+  /* Pricing teaser */
+  .pricing-teaser {
+    padding-top: 120px;
+  }
+
+  .pricing-header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .pricing-header .section-heading {
+    max-width: none;
+  }
+
+  .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 56px;
+    align-items: stretch;
+  }
+
+  .plan-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+  }
+
+  .plan-card.dark {
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+  }
+
+  .plan-badge {
+    position: absolute;
+    top: -13px;
+    left: 32px;
+    background: var(--accent);
+    color: var(--cream);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 999px;
+  }
+
+  .plan-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .plan-price {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .plan-price .amount {
+    font-family: var(--font-display);
+    font-size: 44px;
+    font-weight: 800;
+  }
+
+  .plan-price .period {
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .plan-card.dark .plan-price .period {
+    color: var(--cream-60);
+  }
+
+  .plan-card p {
+    margin: 0;
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .plan-card.dark p {
+    color: var(--cream-70);
+  }
+
+  .compare-link {
+    text-align: center;
+    margin-top: 32px;
+  }
+
+  .compare-link a {
+    font-size: 16.5px;
+    font-weight: 600;
+  }
+
+  /* Responsive */
+  @media (max-width: 980px) {
+    .features-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .dark-band-inner {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .dark-band-frame {
+      max-width: 480px;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .hero {
+      padding-top: 56px;
+    }
+
+    .how-it-works,
+    .features,
+    .pricing-teaser {
+      padding-top: 80px;
+    }
+
+    .dark-band {
+      margin-top: 80px;
+    }
+
+    .dark-band-inner {
+      padding-top: 64px;
+      padding-bottom: 64px;
+    }
+
+    .steps-grid,
+    .features-grid,
+    .plans-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stats {
+      gap: 28px;
+    }
+  }
+</style>

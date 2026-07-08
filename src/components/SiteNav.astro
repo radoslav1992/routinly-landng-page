@@ -1,0 +1,231 @@
+---
+const links = [
+  { href: '/#features', label: 'Features' },
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/about', label: 'About' },
+  { href: '/changelog', label: 'Changelog' },
+];
+---
+
+<header class="site-nav">
+  <div class="container nav-inner">
+    <a href="/" class="brand" aria-label="Routinly home">
+      <img src="/images/logo.png" alt="" width="38" height="38" />
+      <span>Routinly</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Main navigation">
+      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+    </nav>
+
+    <div class="nav-actions">
+      <a class="sign-in" href="https://app.routinly.org/auth">Sign in</a>
+      <a class="cta" href="https://app.routinly.org">Get started free</a>
+    </div>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+    </button>
+  </div>
+
+  <div class="mobile-menu" id="mobile-menu" hidden>
+    <nav aria-label="Mobile navigation">
+      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+      <a href="https://app.routinly.org/auth">Sign in</a>
+      <a class="cta" href="https://app.routinly.org">Get started free</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(250, 246, 238, 0.92);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .brand img {
+    width: 38px;
+    height: 38px;
+    object-fit: cover;
+    mix-blend-mode: multiply;
+  }
+
+  .brand span {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 21px;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav-links a {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .nav-links a:hover {
+    color: var(--accent);
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .sign-in {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .sign-in:hover {
+    color: var(--accent);
+  }
+
+  .cta {
+    background: var(--ink);
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 999px;
+    transition: background 0.15s;
+  }
+
+  .cta:hover {
+    background: var(--accent);
+    color: var(--cream);
+  }
+
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .menu-bar {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: transform 0.2s;
+  }
+
+  .menu-toggle[aria-expanded='true'] .menu-bar:first-child {
+    transform: translateY(4px) rotate(45deg);
+  }
+
+  .menu-toggle[aria-expanded='true'] .menu-bar:last-child {
+    transform: translateY(-4px) rotate(-45deg);
+  }
+
+  .mobile-menu {
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+  }
+
+  .mobile-menu nav {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 20px 20px 20px;
+    gap: 4px;
+  }
+
+  .mobile-menu a {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 500;
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--row-border);
+  }
+
+  .mobile-menu a:hover {
+    color: var(--accent);
+  }
+
+  .mobile-menu a.cta {
+    margin-top: 14px;
+    text-align: center;
+    border-bottom: none;
+    padding: 13px 20px;
+    color: var(--cream);
+  }
+
+  .mobile-menu a.cta:hover {
+    color: var(--cream);
+  }
+
+  @media (max-width: 900px) {
+    .nav-links,
+    .nav-actions {
+      display: none;
+    }
+
+    .menu-toggle {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    toggle.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
+    if (menu) menu.hidden = open;
+  });
+
+  // Close the menu after choosing a link (matters for same-page #anchors)
+  menu?.addEventListener('click', (event) => {
+    if ((event.target as HTMLElement).closest('a') && toggle && menu) {
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+      menu.hidden = true;
+    }
+  });
+</script>
